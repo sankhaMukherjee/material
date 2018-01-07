@@ -1,0 +1,5 @@
+{
+    "n_splits"     : 10   ,
+    "n_repeats"    : 2    ,
+    "random_state" : 2018
+}

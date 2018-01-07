@@ -1,0 +1,11 @@
+{
+    "dataSources":{
+        "materialProperties" : "../data/materialProp",
+        "test"               : "../data/raw_data/test.csv",
+        "train"              : "../data/raw_data/train.csv"
+    },
+    "results":{
+        "imgFolder"    : "../results/img",
+        "uploadFolder" : "../results/forUpload"
+    }
+}
