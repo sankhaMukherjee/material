@@ -86,7 +86,7 @@ def plotErrors(y, yHat, fileName):
 
     return
 
-def plotPredictions(y, yHat, fileName):
+def plotPredictions(y, yHat, fileName, colors=None):
 
     imgFolder = config['results']['imgFolder']
     fileName  = os.path.join( imgFolder, fileName )
@@ -95,7 +95,10 @@ def plotPredictions(y, yHat, fileName):
     ax1 = plt.axes([0.1, 0.2, 0.39, 0.79])
     ax2 = plt.axes([0.6, 0.2, 0.39, 0.79])
 
-    ax1.plot(y[:, 0], yHat[:, 0], 's', mfc='orange', mec='brown', alpha=0.1)
+    if colors is not None:
+        ax1.scatter(y[:, 0], yHat[:, 0], m='s', c=colors, alpha=0.1)
+    else:
+        ax1.plot(y[:, 0], yHat[:, 0], 's', mfc='orange', mec='brown', alpha=0.1)
     ax1.plot([y[:, 0].min(), y[:, 0].max()], [y[:, 0].min(), y[:, 0].max()], lw=2, color='black' )
 
     ax2.plot(y[:, 1], yHat[:, 1], 's', mfc='orange', mec='brown', alpha=0.1)
