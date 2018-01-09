@@ -6,6 +6,7 @@ from lib    import readData, saveData, scorer
 from numpy  import linalg as LA
 from models import rfmodel, GBmodel, optimizeModel, XGboost
 from plots  import plotResults, plotLearningCurves
+from tqdm   import tqdm
 
 
 def main():
@@ -19,7 +20,7 @@ def main():
     dfX, dfy   = readData.readSampleData(trainData = True)
     dfX1, dfy1 = readData.readSampleData(trainData = False)
 
-    if True:
+    if False:
 
         i = 0
         # Get optimized parameters for each model
@@ -27,7 +28,7 @@ def main():
         print(params[0].head())
         print(params[1].head())
 
-        for i in range(3):
+        for i in tqdm(range(1)):
 
             # Initiate the first model
             xgbConfig = json.load(open('../config/XGBconfig.json'))
@@ -63,7 +64,7 @@ def main():
                 m1.predict(dfX.values).reshape(-1, 1), 
                 m2.predict(dfX.values).reshape(-1, 1)))
 
-            plotResults.plotPredictions(dfy.values, yHat, 'XGBoptimized_{:05d}.png'.format(i))
+            plotResults.plotPredictions(dfy.values, yHat, 'XGBoptimized_{:05d}.png'.format(i), dfX.ix[:, 'spacegroup'].values)
 
             # Predict the result using this method ...
             yHat = np.hstack((
@@ -72,7 +73,7 @@ def main():
 
             saveData.saveData(yHat)
 
-    if False:
+    if True:
         # Optimize a XGboost model and save the result ...        
         xgbConfig = json.load(open('../config/XGBconfig.json'))
         m1 = XGboost.solveRegressor( 

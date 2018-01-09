@@ -63,6 +63,7 @@ def readSampleData(trainData = True):
         file = config['dataSources']['test']
 
     dfX = pd.read_csv(file)
+    dfX.drop( 'id', axis=1 )
     yCols = ['formation_energy_ev_natom', 'bandgap_energy_ev' ]
     if list(dfX.columns)[-1] == 'bandgap_energy_ev':
         dfY = dfX[ yCols ]

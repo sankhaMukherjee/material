@@ -33,7 +33,7 @@ def plotHist(y, yHat, fileName):
     return
 
 
-def plotLogErrors(y, yHat, fileName):
+def plotLogErrors(y, yHat, fileName, colors=None):
 
     fileName = fileName.replace('.png', '_Log-errors.png')
 
@@ -44,11 +44,22 @@ def plotLogErrors(y, yHat, fileName):
     y = np.log(y + 1)
     yHat = np.log(yHat + 1)
 
-    ax1.plot(y[:, 0], (yHat[:, 0] - y[:, 0])**2, 's', mfc='orange', mec='brown', alpha=0.1)
+    if colors is None:
+        ax1.plot(y[:, 0], (yHat[:, 0] - y[:, 0])**2, 's', mfc='orange', mec='brown', alpha=0.1)
+    else:
+        sm = plt.cm.ScalarMappable(
+            cmap=plt.cm.viridis, norm=plt.Normalize(vmin=colors.min(), vmax=colors.max()))
+        sm._A = []
+        plt.colorbar(sm)
+        c = ax1.scatter(y[:, 0], (yHat[:, 0] - y[:, 0])**2, marker='s', c=colors, alpha=0.1)
     ax1.axhline(0, lw=2, color='black')
 
-    ax2.plot(y[:, 1], (yHat[:, 1]-y[:, 1])**2, 's', mfc='orange', mec='brown', alpha=0.1)
+    if colors is None:
+        ax2.plot(y[:, 1], (yHat[:, 1]-y[:, 1])**2, 's', mfc='orange', mec='brown', alpha=0.1)
+    else:
+        ax2.scatter(y[:, 1], (yHat[:, 1] - y[:, 1])**2, marker='s', c=colors, alpha=0.1)
     ax2.axhline(0, lw=2, color='black')
+
     
     ax1.set_xlabel('formation energy (eV)')
     ax1.set_ylabel('log square error')
@@ -60,7 +71,7 @@ def plotLogErrors(y, yHat, fileName):
 
     return
 
-def plotErrors(y, yHat, fileName):
+def plotErrors(y, yHat, fileName, colors=None):
 
     fileName = fileName.replace('.png', '_errors.png')
 
@@ -68,17 +79,29 @@ def plotErrors(y, yHat, fileName):
     ax1 = plt.axes([0.1, 0.2, 0.39, 0.79])
     ax2 = plt.axes([0.6, 0.2, 0.39, 0.79])
 
-    ax1.plot(y[:, 0], yHat[:, 0] - y[:, 0], 's', mfc='orange', mec='brown', alpha=0.1)
+    if colors is None:
+        ax1.plot(y[:, 0], yHat[:, 0] - y[:, 0], 's', mfc='orange', mec='brown', alpha=0.1)
+    else:
+        sm = plt.cm.ScalarMappable(
+            cmap=plt.cm.viridis, norm=plt.Normalize(vmin=colors.min(), vmax=colors.max()))
+        sm._A = []
+        plt.colorbar(sm)
+        c = ax1.scatter(y[:, 0], yHat[:, 0] - y[:, 0], marker='s', c=colors, alpha=0.1)
+
     ax1.axhline(0, lw=2, color='black')
 
-    ax2.plot(y[:, 1], yHat[:, 1]-y[:, 1], 's', mfc='orange', mec='brown', alpha=0.1)
+    if colors is None:
+        ax2.plot(y[:, 1], yHat[:, 1]-y[:, 1], 's', mfc='orange', mec='brown', alpha=0.1)
+    else:
+        ax2.scatter(y[:, 1], yHat[:, 1] - y[:, 1], marker='s', c=colors, alpha=0.1)
+        
     ax2.axhline(0, lw=2, color='black')
     
 
     ax1.set_xlabel('formation energy (eV)')
-    ax1.set_ylabel('prediction')
+    ax1.set_ylabel('error')
     ax2.set_xlabel('bandgap (eV)')
-    ax2.set_ylabel('prediction')
+    ax2.set_ylabel('error')
 
 
     plt.savefig(fileName)
@@ -96,25 +119,33 @@ def plotPredictions(y, yHat, fileName, colors=None):
     ax2 = plt.axes([0.6, 0.2, 0.39, 0.79])
 
     if colors is not None:
-        ax1.scatter(y[:, 0], yHat[:, 0], m='s', c=colors, alpha=0.1)
+        ax1.scatter(y[:, 0], yHat[:, 0], marker='s', c=colors, alpha=0.1)
+        sm = plt.cm.ScalarMappable(
+            cmap=plt.cm.viridis, norm=plt.Normalize(vmin=colors.min(), vmax=colors.max()))
+        sm._A = []
+        plt.colorbar(sm)
     else:
         ax1.plot(y[:, 0], yHat[:, 0], 's', mfc='orange', mec='brown', alpha=0.1)
     ax1.plot([y[:, 0].min(), y[:, 0].max()], [y[:, 0].min(), y[:, 0].max()], lw=2, color='black' )
 
-    ax2.plot(y[:, 1], yHat[:, 1], 's', mfc='orange', mec='brown', alpha=0.1)
+    if colors is not None:
+        ax2.scatter(y[:, 1], yHat[:, 1], marker='s', c=colors, alpha=0.1)
+    else:
+        ax2.plot(y[:, 1], yHat[:, 1], 's', mfc='orange', mec='brown', alpha=0.1)
     ax2.plot([y[:, 1].min(), y[:, 1].max()], [y[:, 1].min(), y[:, 1].max()], lw=2, color='black' )
 
+
     ax1.set_xlabel('formation energy (eV)')
-    ax1.set_ylabel('error')
+    ax1.set_ylabel('prediction')
     ax2.set_xlabel('bandgap (eV)')
-    ax2.set_ylabel('error')
+    ax2.set_ylabel('prediction')
 
 
     plt.savefig(fileName)
     plt.close()
 
-    plotErrors(y, yHat, fileName)
-    plotLogErrors(y, yHat, fileName)
+    plotErrors(y, yHat, fileName, colors)
+    plotLogErrors(y, yHat, fileName, colors)
     plotHist(y, yHat, fileName)
 
     return
