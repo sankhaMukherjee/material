@@ -1,8 +1,10 @@
 import json
 import numpy as np 
+import pandas as pd
+from tqdm import tqdm
 
 from pprint import pprint
-from lib    import readData, saveData, scorer
+from lib    import readData, saveData, scorer, addMaterialProp
 from numpy  import linalg as LA
 from models import rfmodel, GBmodel, optimizeModel, XGboost
 from plots  import plotResults, plotLearningCurves
@@ -11,7 +13,7 @@ from tqdm   import tqdm
 
 def main():
 
-    # props = readData.readMaterialProps()
+    props = readData.readMaterialProps()
     # latticeProp, atoms = readData.readGeometryData('../data/raw_data/test/1/geometry.xyz')
     
     # atoms1 = np.array([a[1] for a in atoms])
@@ -19,6 +21,25 @@ def main():
 
     dfX, dfy   = readData.readSampleData(trainData = True)
     dfX1, dfy1 = readData.readSampleData(trainData = False)
+
+    # Plot data about the input ...
+    if True:
+        print('X ...')
+        print(dfX.head())
+        print('\nMaterial Props')
+        print(props)
+
+
+        prop = 'atomic_radii'
+        print('\nAtomic Radii')
+        print(props['atomic_radii'].values)
+
+        vals = addMaterialProp.newCols(dfX, props, prop='atomic_radii')
+        print(vals)
+        # print(pd.concat((dfX, vals), axis=1))
+
+
+        # addMaterialProp.avgMaterialProp()
 
     if False:
 
@@ -73,7 +94,7 @@ def main():
 
             saveData.saveData(yHat)
 
-    if True:
+    if False:
         # Optimize a XGboost model and save the result ...        
         xgbConfig = json.load(open('../config/XGBconfig.json'))
         m1 = XGboost.solveRegressor( 
