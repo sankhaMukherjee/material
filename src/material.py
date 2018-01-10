@@ -34,12 +34,9 @@ def main():
         print('\nAtomic Radii')
         print(props['atomic_radii'].values)
 
-        vals = addMaterialProp.newCols(dfX, props, prop='atomic_radii')
-        print(vals)
+        addMaterialProp.newCols(dfX, props, prop='atomic_radii', dataset='train')
+        
         # print(pd.concat((dfX, vals), axis=1))
-
-
-        # addMaterialProp.avgMaterialProp()
 
     if False:
 

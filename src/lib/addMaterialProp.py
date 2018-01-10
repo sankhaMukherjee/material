@@ -11,7 +11,7 @@ def totMaterialProp( N, pctAl, pctGa, pctIn, propAl, propGa, propIn, propO ):
 
     return totProp
 
-def newCols(dfX, props, prop='atomic_radii'):
+def newCols(dfX, props, prop='atomic_radii', dataset='train'):
 
     vals = []
     for r in tqdm(dfX.iterrows(), total=len(dfX)):
@@ -23,6 +23,6 @@ def newCols(dfX, props, prop='atomic_radii'):
 
     vals = pd.DataFrame(vals, columns=[(prop+'_'+c) for c in ['Al', 'Ga', 'In', 'O']  ])
 
-    vals.to_csv('../data/intermediate/materialProps/{}_total.csv'.format(prop), index=False)
+    vals.to_csv('../data/intermediate/materialProps/{}_{}_total.csv'.format(prop, dataset), index=False)
 
     return vals
