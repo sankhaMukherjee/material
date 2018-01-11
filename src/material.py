@@ -101,7 +101,7 @@ def main():
 
             saveData.saveData(yHat)
 
-    if True:
+    if False:
         # Optimize a XGboost model and save the result ...        
         xgbConfig = json.load(open('../config/XGBconfig.json'))
         m1 = XGboost.solveRegressor( 
