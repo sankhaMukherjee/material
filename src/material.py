@@ -23,7 +23,7 @@ def main():
     dfX1, dfy1 = readData.readSampleData(trainData = False)
 
     # Plot data about the input ...
-    if True:
+    if False:
         print('X ...')
         print(dfX.head())
         print('\nMaterial Props')
