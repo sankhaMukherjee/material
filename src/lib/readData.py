@@ -2,6 +2,8 @@ import pandas as pd
 import numpy  as np
 import json, os
 
+from tqdm import tqdm
+
 config = json.load(open('../config/config.json'))
 
 def readMaterialProps():
@@ -54,6 +56,22 @@ def readGeometryData(fileName):
                 atoms.append((a, np.array(list(map(float, [x, y, z])))))
 
     return latticeProp, atoms
+
+def readMaterialDf(trainData=True):
+
+    folder = '../data/intermediate/materialProps'
+    files  = os.listdir(folder)
+    if trainData:
+        files = [f for f in files if 'train' in f]
+    else:
+        files = [f for f in files if 'test' in f]
+
+    data = []
+    for f in tqdm(files):
+        data.append(pd.read_csv(os.path.join(folder, f)))
+    data = pd.concat(data, axis=1)
+
+    return data
 
 def readSampleData(trainData = True):
 

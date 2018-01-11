@@ -22,6 +22,14 @@ def main():
     dfX, dfy   = readData.readSampleData(trainData = True)
     dfX1, dfy1 = readData.readSampleData(trainData = False)
 
+    matX  = readData.readMaterialDf(trainData=True)
+    matX1 = readData.readMaterialDf(trainData=False)
+    # print(matX.head(3).T)
+    # print(matX1.head(3).T)
+
+    dfX  = pd.concat((dfX , matX ), axis=1)
+    dfX1 = pd.concat((dfX1, matX1), axis=1)
+
     # Plot data about the input ...
     if False:
         print('X ...')
@@ -93,7 +101,7 @@ def main():
 
             saveData.saveData(yHat)
 
-    if False:
+    if True:
         # Optimize a XGboost model and save the result ...        
         xgbConfig = json.load(open('../config/XGBconfig.json'))
         m1 = XGboost.solveRegressor( 
