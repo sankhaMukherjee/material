@@ -29,12 +29,14 @@ def main():
         print('\nMaterial Props')
         print(props)
 
+        propsCols = list(props.columns)
+        propsCols = [c for c in propsCols if c not in ['atom']]
 
-        prop = 'atomic_radii'
-        print('\nAtomic Radii')
-        print(props['atomic_radii'].values)
-
-        addMaterialProp.newCols(dfX, props, prop='atomic_radii', dataset='train')
+        for prop in tqdm(propsCols):
+            # tqdm.write('\n{}'.format(prop))
+            # tqdm.write(str(props[prop].values))
+            addMaterialProp.newCols(dfX, props, prop=prop, dataset='train')
+            addMaterialProp.newCols(dfX1, props, prop=prop, dataset='test')
         
         # print(pd.concat((dfX, vals), axis=1))
 
